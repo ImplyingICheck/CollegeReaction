@@ -1,0 +1,345 @@
+<script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-messaging.js"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">-->
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<html lang="en">
+<style>
+    h3{
+        background-color: #007bff;
+        color: white;
+        padding: .5rem 1rem;
+        font-size: 1.25rem;
+        line-height: 1.5;
+        border-radius: .3rem;
+    }
+    .invalid{
+        color:red;
+        display: none;
+    }
+    .trash{
+        margin-left: 10px;
+    }
+</style>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <!-- Bootstrap core CSS -->
+    <!--<link href="../../../../dist/css/bootstrap.min.css" rel="stylesheet">-->
+
+    <!-- Custom styles for this template -->
+    <!--<link href="form-validation.css" rel="stylesheet">-->
+    <button type = "button" onclick="pageSwap('admin.html')">admin page</button>
+    <!--<button type = "button" onclick="pageSwap('maps/copy.html')">map page</button>-->
+    <!--<button type = "button" onclick="pageSwap('test.js')">node test</button>-->
+ 
+  </head>
+
+  <body class="bg-light">
+    <div class="container">
+      
+      <div class="row">
+        <div class="col-md-4 order-md-2 mb-4">
+        </div>
+        <div class="col-md-8 order-md-1">
+          <h4 class="mb-3">College Reaction Solutions</h4>
+          <form id = "main" class="needs-validation" novalidate>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="firstName">First name</label>
+                <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+                <div class="first invalid">
+                  Valid first name is required.
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="lastName">Last name</label>
+                <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+                <div class="last invalid">
+                  Valid last name is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="compname">Company Name</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="compname" placeholder="Company Name" required>
+                <div class="comp invalid" style="width: 100%;">
+                  Your company name is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email" placeholder="you@example.com">
+              <div class="email invalid">
+                Please enter a valid email address
+              </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="phone">Phone number</label>
+                <input type = "phone" class = "form-control" id = "phone" placeholder="555-555-5555">
+                <div class="phone invalid">
+                    Please enter a valid phone number
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="message">Message</label>
+                <textarea id = "message" class = "form-control" rows="4" cols ="50"></textarea>
+            </div>
+                <div class="mb-3">
+                    <button id="addQ" type="button" class = "btn btn-primary query">
+                        <i class="fas fa-plus"></i> Add Question
+                    </button>
+                    <!--<button id="addQ" type="button" class = "btn btn-primary response">
+                        <i class="fas fa-plus"></i> Add Response
+                    </button>-->
+                    <button id="confirm" type="button" class = "btn btn-primary">
+                        <i class="fas fa-check"></i> Confirm
+                    </button>
+                </div>
+                <!--<button class = "btn btn-primary ">Add Question</button>-->
+            <div class="row">
+            <button type="button" onclick="save()" class="btn btn-primary btn-lg btn-block" type="submit">Submit Poll</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <!--<script src="../../../../assets/js/vendor/popper.min.js"></script>-->
+    <!--<script src="../../../../dist/js/bootstrap.min.js"></script>
+    <script src="../../../../assets/js/vendor/holder.min.js"></script>-->
+    <script>
+      // Example starter JavaScript for disabling form submissions if there are invalid fields
+      (function() {
+        'use strict';
+
+        window.addEventListener('load', function() {
+          // Fetch all the forms we want to apply custom Bootstrap validation styles to
+          var forms = document.getElementsByClassName('needs-validation');
+
+          // Loop over them and prevent submission
+          var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+              if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+              form.classList.add('was-validated');
+            }, false);
+          });
+        }, false);
+      })();
+    </script>
+  </body>
+</html>
+
+<script>
+  // Initialize Firebase
+  var config = {
+        apiKey: "AIzaSyBmoYKilGu-xp58_oH5YnBecOvhh7mgTzc",
+        authDomain: "collegereaction-d3eed.firebaseapp.com",
+        databaseURL: "https://collegereaction-d3eed.firebaseio.com",
+        projectId: "collegereaction-d3eed",
+        storageBucket: "collegereaction-d3eed.appspot.com",
+        messagingSenderId: "592524817735"
+  };
+  firebase.initializeApp(config);
+  var database = firebase.database();
+  var addingQ=true;
+  var numAs = 0;
+  $(document).ready(function() {
+      $("#confirm").hide();
+      $(".response").hide();
+      $(document).on("click", "button.trash" , function() {
+          var parentElem = this.parentElement;
+          if(!addingQ && ($( ".Q" ).index(parentElem) == ($(".Q").length - 1))){
+                numAs = 0;
+                addingQ = true;
+                $("#confirm").hide();
+                $("#addQ").text("Add Question");
+           }
+            $(parentElem).nextUntil( ".Q, button" ).remove();
+            var remaining = $(parentElem).nextAll( ".Q" ).find("h3");
+            console.log("remaining ",remaining);
+            for(var i = 0;i < remaining.length;i++){
+                var old = remaining[i].textContent.split("Question ")[1];
+                console.log("old ",old);
+                console.log("remaining ",remaining[i]);
+                remaining[i].textContent = "Question " + (old - 1);
+            }
+            $(parentElem).remove();
+      });
+  });
+function pageSwap(newPage){
+    /*alert("swapping page to " + newPage);*/
+    window.location.href=newPage;
+}
+  $("#addQ").click(function() {
+      if(addingQ){
+          $( "<div class='Q mb-3'><label for='question'><h3>Question " + ($( ".question" ).length + 1) + "</h3></label><button type='button' class='trash btn btn-danger'><span class='glyphicon glyphicon-trash'></span></button><textarea class = 'question form-control' rows='4' cols ='50'></textarea></div>").insertBefore("#addQ");
+      }
+      else{
+         numAs++;
+         $( "<div class='A mb-3'><label style='margin-bottom:10px; for='answer'>Answer " + numAs + "</label><textarea class = 'answer form-control' rows='4' cols ='50'></textarea></div>"
+              ).insertBefore("#addQ");
+      }
+      if(addingQ){
+        addingQ = false;
+        $("#confirm").show();
+        $("#addQ").text("Add Response");
+      }
+  });
+
+$("#confirm").click(function() {
+    addingQ = true;
+    numAs = 0;
+    $("#confirm").hide();
+    $("#addQ").text("Add Question");
+});
+  function recordQuestions(){
+    var key = localStorage.getItem("newRef");
+    var newRef = firebase.database().ref('requests/'+key+'/questions');
+        questions.forEach(function(name,index){
+        console.log("questions[index]",questions[index]);
+        console.log("answers[index]",answers[index]);
+        newRef.push().set({
+            question: questions[index],
+            responses: answers[index]
+        });
+    });
+    //pageSwap("maps/copy.html");
+  }
+  function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+  function validatePhone(phone){
+    var re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+    return re.test(String(phone).toLowerCase());
+  }
+  function insertData(){
+        var newRef = firebase.database().ref('requests').push();
+        localStorage.setItem("newRef",newRef.key);
+        var bad = 0;
+        var first = $("#firstName").val();
+        if(!first){
+            bad = 1;
+            $(".first").css("display","inline");
+            console.log("no first name");
+        }else{
+            $(".first").css("display","none");
+        }
+        var last = $("#lastName").val();
+        if(!last){
+            bad = 1;
+            $(".last").css("display","inline");
+            console.log("no last name");
+        }
+        else{
+            $(".last").css("display","none");
+        }
+        var compname = $("#compname").val();
+        if(!compname){
+            bad = 1;
+            $(".comp").css("display","inline");
+            console.log("no compname");
+        }
+        else{
+            $(".comp").css("display","none");
+        }
+        var email = $("#email").val();
+        if(!email || !validateEmail(email)){
+            bad = 1;
+            $(".email").css("display","inline");
+        }
+        else{
+            $(".email").css("display","none");
+        }
+        var phone = $("#phone").val();
+        if(!phone || !validatePhone(phone)){
+            bad = 1;
+            $(".phone").css("display","inline");
+        }
+        else{
+            $(".phone").css("display","none");
+        }
+        var message = $("#message").val();
+        var questions =[];
+        var answers = [];
+        $( ".Q" ).each(function( index ) {
+            answers.push([]);
+            console.log(index + ": " + $( this ).find(".question").val());
+            questions.push($( this ).find(".question").val());
+            console.log("next until ",$(this).nextUntil( ".Q, button" ));
+            var AnswerElems = Array.from($(this).nextUntil( ".Q, button" ));
+            console.log("answerelems ",AnswerElems);
+            AnswerElems.forEach(function(element){
+                console.log("answer ",element.querySelector(".answer").value);
+                answers[answers.length - 1].push(element.querySelector(".answer").value);
+            });
+            if(answers[answers.length - 1].length < 2){
+                bad = 1;
+                alert("Each question must have at least two possible responses");
+            }
+            
+        });
+        if(questions.length < 1){
+            bad = 1;
+            alert("There must be at least one question");
+        }
+        console.log("questions ",questions);
+        console.log("answers ",answers);
+        
+        if(!bad){
+            newRef.set({
+                first: first,
+                last: last,
+                compname: compname,
+                email: email,
+                phone: phone,
+                message: message,
+                questions: questions,
+                answers:answers
+            }).then(() => {
+                console.log('Write succeeded!');
+                pageSwap("maps/copy.html");
+            });
+            
+        }
+  }
+  function save(){
+     insertData();   
+  }
+
+</script>
+

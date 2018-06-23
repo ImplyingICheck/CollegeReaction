@@ -1,0 +1,92 @@
+<script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-messaging.js"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<html>
+    <head>
+        <style>
+            table {
+                border-collapse: collapse;
+                border: 5px solid black;
+                width: 100%;
+            }
+            td, th{
+                border: 1px solid #C9E7F9;
+                text-align: left;
+                padding: 8px;
+            }
+            th{
+                background-color:white;
+            }
+            tr{
+                background-color:#C9E7F9;
+                border: 5px solid black;
+            }
+            #outer{
+                width:100%;
+                text-align:center;
+            }
+            .inner{
+                display:inline-block;
+            }
+        </style>
+    </head>
+    <body>
+        <table id="requests">
+            <tr>
+                <th>Company</th>
+                <th>Name</th>
+                <th>Phone #</th>
+                <th>Message</th>
+            </tr>
+        </table>
+        <div id="outer">
+            <button id="confirm" type="button" class="inner btn btn-primary">Confirm</button>
+            <button id="cancel"  type="button"  class="inner btn btn-warning">Cancel</button>
+        </div>
+    </body>
+</html>
+<script>
+var config = {
+    apiKey: "AIzaSyBmoYKilGu-xp58_oH5YnBecOvhh7mgTzc",
+    authDomain: "collegereaction-d3eed.firebaseapp.com",
+    databaseURL: "https://collegereaction-d3eed.firebaseio.com",
+    projectId: "collegereaction-d3eed",
+    storageBucket: "collegereaction-d3eed.appspot.com",
+    messagingSenderId: "592524817735"
+};
+  firebase.initializeApp(config);
+  var database = firebase.database();
+  var userRef = localStorage.getItem("newRef");
+  console.log("userRef " + userRef);
+$("#confirm").click(function(){
+    $("#requests").empty();
+    clear();
+});
+$( document ).ready(function() {
+    database.ref("requests/"+userRef).on('value', function(snapshot) {
+    info = snapshot.val();
+    $('#requests tr:last').after('<tr><td>' + info.compname + '</td><td>' + info.first + ' ' + info.last + '</td><td>'+info.phone+'</td><td>'+info.message+'</td></tr>');
+  });
+
+});
+  function clear(){
+      $("#confirm").remove();
+      $("#cancel").remove();
+      $("body").append('<div>Thanks!<div>');
+      window.location.href="index.html";
+  }
+  $("#cancel").click(function()
+  {
+      $("#requests").empty();
+      database.ref("requests/"+userRef).remove();
+      clear();
+  });
+</script>

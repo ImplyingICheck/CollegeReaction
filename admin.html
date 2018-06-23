@@ -1,0 +1,377 @@
+<script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-messaging.js"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<html>
+    <head>
+         <style>
+            table {
+                border-collapse: collapse;
+                border: 5px solid black;
+                width: 100%;
+            }
+            td, th{
+                border: 1px solid #C9E7F9;
+                text-align: left;
+                padding: 8px;
+            }
+            th{
+                background-color:white;
+            }
+            tr{
+                background-color:#C9E7F9;
+                border: 5px solid black;
+            }
+            .modal {
+                display: none;
+                position:fixed;
+                z-index: 1;
+                padding-top: 100px;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgb(0,0,0);
+                background-color: rgba(0,0,0,0.4);
+            }
+            .modal-content {
+                background-color: #fefefe;
+                margin: auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%;
+            }
+            .close {
+                color: #aaaaaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+            .close:hover,
+            .close:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            button{
+                width:100%;
+            }
+            .boxes{
+                background-color: #6495ed;
+            }
+        </style>
+
+    </head>
+    <body>
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div id="questions">
+                </div>
+                <form style="display: none;" id="gform" method="POST" class="pure-form pure-form-stacked" data-email="example@email.net"
+              action="https://script.google.com/macros/s/AKfycbzYQbUoIQpqBpmglU4FJX7QhbDzcwsBlMEF-THgFZMzr5ZhoVVs/exec">
+                            <!-- change the form action to your script url -->
+
+                <fieldset class="pure-group">
+                  <label for="name">Name: </label>
+                  <input id="name" name="name" placeholder="What your Mom calls you" />
+                </fieldset>
+
+                <fieldset class="pure-group">
+                  <label for="message">Message: </label>
+                  <textarea id="message" name="message" rows="10"
+                  placeholder="Tell us what's on your mind..."></textarea>
+                </fieldset>
+
+                <fieldset class="pure-group">
+                  <label for="email"><em>Your</em> Email Address:</label>
+                  <input id="email" name="email" type="email" value=""
+                  required placeholder="your.name@email.com"/>
+                  <span id="email-invalid" style="display:none">
+                    Must be a valid email address</span>
+                </fieldset>
+
+                <fieldset class="pure-group">
+                  <label for="color">Favourite Color: </label>
+                  <input id="color" name="color" placeholder="green" />
+                </fieldset>
+
+                <fieldset class="pure-group">
+                  <label for="deadline">Favourite Color: </label>
+                  <input id="deadline" name="deadline" placeholder="green" />
+                </fieldset>
+
+                <fieldset class="pure-group">
+                  <label for="respondents">Favourite Color: </label>
+                  <input id="respondents" name="respondents" placeholder="green" />
+                </fieldset>
+
+                <fieldset class="pure-group">
+                  <label for="questions">Favourite Color: </label>
+                  <input id="questions" name="questions" placeholder="green" />
+                </fieldset>
+
+                <fieldset class="pure-group">
+                  <label for="answers">Favourite Color: </label>
+                  <input id="answers" name="answers" placeholder="green" />
+                </fieldset>
+
+                <button class="button-success pure-button button-xlarge">
+                  <i class="fa fa-paper-plane"></i>&nbsp;Send</button>
+
+              </form>
+            </div>
+        </div>
+        <table id="requests">
+            <tr>
+                <th>Company</th>
+                <th>Name</th>
+                <th>Phone #</th>
+                <th>Message</th>
+            </tr>
+        </table>
+        <button type="button" onclick="addPollster()" class="btn btn-info">Add Polster</button>
+    </body>
+</html>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBmoYKilGu-xp58_oH5YnBecOvhh7mgTzc",
+    authDomain: "collegereaction-d3eed.firebaseapp.com",
+    databaseURL: "https://collegereaction-d3eed.firebaseio.com",
+    projectId: "collegereaction-d3eed",
+    storageBucket: "collegereaction-d3eed.appspot.com",
+    messagingSenderId: "592524817735"
+  };
+  firebase.initializeApp(config);
+  var database = firebase.database();
+  var requests = database.ref("requests");
+  var questions = 0;
+  var question = [];
+  var answers = [];
+  var counter = 0;
+
+  function getFormData() {
+      var form = document.getElementById("gform");
+      var elements = form.elements; // all form elements
+      var fields = Object.keys(elements).filter(function(k) {
+            // the filtering logic is simple, only keep fields that are not the honeypot
+            return (elements[k].name !== "honeypot");
+      }).map(function(k) {
+        if(elements[k].name !== undefined) {
+          return elements[k].name;
+        // special case for Edge's html collection
+        }else if(elements[k].length > 0){
+          return elements[k].item(0).name;
+        }
+      }).filter(function(item, pos, self) {
+        return self.indexOf(item) == pos && item;
+      });
+      var data = {};
+      fields.forEach(function(k){
+        data[k] = elements[k].value;
+        var str = ""; // declare empty string outside of loop to allow
+                      // it to be appended to for each item in the loop
+        if(elements[k].type === "checkbox"){ // special case for Edge's html collection
+          str = str + elements[k].checked + ", "; // take the string and append 
+                                                  // the current checked value to 
+                                                  // the end of it, along with 
+                                                  // a comma and a space
+          data[k] = str.slice(0, -2); // remove the last comma and space 
+                                      // from the  string to make the output 
+                                      // prettier in the spreadsheet
+        }else if(elements[k].length){
+          for(var i = 0; i < elements[k].length; i++){
+            if(elements[k].item(i).checked){
+              str = str + elements[k].item(i).value + ", "; // same as above
+              data[k] = str.slice(0, -2);
+            }
+          }
+        }
+      });
+
+      data.formDataNameOrder = JSON.stringify(fields);
+      data.formGoogleSheetName = form.dataset.sheet || "responses"; // default sheet name
+      data.formGoogleSendEmail = form.dataset.email || ""; // no email by default
+
+      console.log(data);
+      return data;
+    }
+
+  $("#gform").submit(function(event){
+      //console.log("#gform submitted");
+      event.preventDefault(); 
+      var $form = $(this);
+      var data = $form.serialize();
+      var redirect = "admin.html";
+      request = $.ajax({
+          url: event.target.action,
+          type:"POST",
+          dataType:'json',
+          data: data,
+          cache:false,
+          success:function(response){
+              
+              //console.log("response " + response);
+              alert("100");
+              window.location.replace("admin.html");
+          }
+      });
+      request.done(function(response){
+          //console.log("success");
+          window.location.replace("admin.html");
+      });
+      request.fail(function(response){
+          alert("failed");
+      });
+  });
+  
+  requests.on("child_added", function(snapshot) {
+        var info = snapshot.val();
+        $('#requests tr:last').after('<tr class = "blue" id='+snapshot.key+'><td>' + info.compname + '</td><td>' + info.first + ' ' + info.last + '</td><td>'+info.phone+'</td><td>'+info.message+'</td></tr>');
+        counter++;
+    });
+    requests.on("child_removed",function(snapshot){
+        location.reload();
+    });
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    $(document).on('click','.blue',function(){
+        $(".modal-content").append('<div class="boxes"></div>');
+        var box_count = 0;
+        var query = firebase.database().ref('pollsters');
+        query.once("value").then(function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {//for every question here
+                box_count += 1;
+                var info = childSnapshot.val();
+                $(".boxes").append('<div class="box"><input id="checkBox" class="'+childSnapshot.key+'" type="checkbox">' + info.name + ' </div>');
+             });
+        });
+        modal.style.display = "block";
+        var id = $(this).attr('id');
+        firebase.database().ref('requests/'+id+'/questions').on("value", function(snapshot) {
+            snapshot.forEach(function(childSnapshot){    
+                info = childSnapshot.val();
+                console.log(childSnapshot.val());
+                /* CHECKPOINT */
+                question.push(info.question);
+                answers.push(info.responses);
+                $(".modal-content").append('<div id="questions">' + info.question + '</div>');
+            });
+            /*for(var j = 0;j < k;j++){
+                $(".modal-content").append('<div id ="questions">'+info.questions[i]+'</div>');
+                questions++;
+            }*/
+            $(".modal-content").append('<button id="send" type="button" class="btn btn-danger">Send Poll</button>');
+        }, function (errorObject) {
+              console.log("The read failed: " + errorObject.code);
+        });
+        //$(".modal-content").append("
+
+    });
+    // When the user clicks the button, open the modal 
+    $("#modal").click(function() {
+        modal.style.display = "block";
+    });
+
+    // When the user clicks on <span> (x), close the modal
+    $(document).on('click','#send',function(){
+        var pollsters = [];
+        $(':checkbox:checked').each(function(i){
+            console.log("pollster: " + $(this).attr('class'));
+            pollsters.push($(this).attr('class'));
+        
+        });
+        alert("sending!");
+
+        var email = "";
+        var name = "";
+        pollsters.forEach(function(id,index){
+            console.log("index is " + index);
+            var query = firebase.database().ref('pollsters/'+id);
+            query.once("value").then(function(snapshot){
+                var info = snapshot.val();
+                var message = "<h1>everything sucks. death is inevitable</h1>";
+                if(email != ""){
+                    email += ",";
+                    name += ",";
+                }
+                email += info.email;
+                name += info.name;
+                if((index + 1) == pollsters.length){
+                    console.log("email " + email);
+                    console.log("name " + name);
+                    $("#gform, #email").val(email);
+                    $("#gform, #name").val(name);
+                    $("#gform, #message").val(message);
+                    $("#gform, #deadline").val("today!");
+                    $("#gform, #respondents").val("200");
+                    var qString = "";
+                    var aString = "";
+                    question.forEach(function(item,index){
+                        qString += item;
+                        if((index + 1) < question.length){
+                            qString += "+";
+                        }
+                    });
+                    /*answers.forEach(function(item,index){
+                        item.forEach(function(sub_item,sub_index){
+                            aString += sub_item;
+                            if((sub_index + 1) < item.length){
+                                aString += "+";
+                            }
+                        });
+                        if((index + 1) < answers.length){
+                            aString += "*";
+                        }
+                    });*/
+                    $("#gform, #questions").val(qString);
+                    alert("submitting");
+                    $("#gform").submit();
+                }
+            });
+        });
+
+    });
+    $(document).on('click','span', function() {
+        $(".modal-content").empty();
+        $(".modal-content").append('<span class="close">&times;</span>');
+        questions = 0;
+        modal.style.display = "none";
+    });
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    function addPollster() {
+        var person = prompt("Please enter new pollster name", "Harry Potter");
+        var email = "gollyzoom@gmail.com";
+        if (person != null) {
+            var newRef = firebase.database().ref('pollsters').push();
+            newRef.set({
+                name: person,
+                email: email
+            });
+        }
+    }
+
+</script>

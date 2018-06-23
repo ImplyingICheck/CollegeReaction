@@ -1,0 +1,145 @@
+<script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-messaging.js"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link href="grid.css" rel="stylesheet">
+<html>     
+    <body>
+        <div style="overflow-x:auto;">
+              <table class="table table-dark">
+                <tr id="headers">
+                    <th class="num" id="thick-right" colspan="1">Number</th>
+                    <th class ="gender" id="thick-right" colspan="2">Gender</th>
+                    <th class ="ethnicity" colspan="5">Ethnicity</th>
+                </tr>
+                <tr id="options">
+                    <th class="num" id="thick-right">#</th>
+                    <th class="gender">M</th>
+                    <th class="gender">F</th>
+                    <th class="ethnicity" id="thick-left">Black</th>
+                    <th class="ethnicity" >White</th>
+                    <th class="ethnicity" >Latin</th>
+                    <th class="ethnicity" >Asian</th>
+                    <th class="ethnicity" >Middle Eastern</th>
+    
+                </tr>
+                <tr id="boxes">
+                    <td id="thick-right">1</td>
+                    <td><input class="gender" id = "b0" type="checkbox"></td>
+                    <td><input class="gender" id = "b1" type="checkbox"></td>
+                    <td id="thick-left"><input id = "b2" class="ethnicity" type="checkbox"></td>
+                    <td><input class="ethnicity" id = "b3" type="checkbox"></td>
+                    <td><input class="ethnicity" id = "b4" type="checkbox"></td>
+                    <td><input class="ethnicity" id ="b5" type="checkbox"></td>
+                    <td><input class="ethnicity" id = "b6" type="checkbox"></td>
+                </tr>
+            </table>
+        </div>
+        <!--<button style="width:100%;" type="button" onclick="addQ()" class="btn btn-warning">Add Batch</button>-->
+   <button style="width:100%;" type="button" onclick="collect()" class="btn btn-primary">Submit</button>
+</body>
+</html>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBmoYKilGu-xp58_oH5YnBecOvhh7mgTzc",
+    authDomain: "collegereaction-d3eed.firebaseapp.com",
+    databaseURL: "https://collegereaction-d3eed.firebaseio.com",
+    projectId: "collegereaction-d3eed",
+    storageBucket: "collegereaction-d3eed.appspot.com",
+    messagingSenderId: "592524817735"
+  };
+  firebase.initializeApp(config);
+  var database = firebase.database();
+  var entry = 1;
+  $(document).ready(function() {
+        addQ();
+  });
+  function addQ(){
+      /*COME BACK AND FIX THIS LATER*/
+      var query = database.ref("requests/-L9T5s2B2pLcYWeTc81A/questions");//hard-coded
+      //query.orderByKey().limitToFirst(1).once('value', function(snap) {
+      //query.once('value',function(snap){
+      var j = 0;
+      var response_num = 1;//hard-coded
+      query.once("value").then(function(snapshot) {
+            snapshot.forEach(function(snap) {
+                var info = snap.val();
+                console.log(info);
+                var num_responses = info.responses.length;
+                var mytag = "Q"+ i;
+                var box_base = 7;//hard-coded based on number of previous boxes
+                var mybox = "b" + box_base;
+                console.log("info ",info); 
+                $("#headers").append("<th id='thick-left' class=mytag colspan="+num_responses+">"+info.question+"</th>"); 
+                //else{
+                //$("#options").append("<th class=mytag"> + info.responses[i] + "</th>");
+                //}
+                //<th class=mytag>blue</th><th class=mytag>green</th>");
+                for(var i = 0;i < num_responses;i++)
+                {
+                    if(i == 0){
+                        $("#options").append("<th class=mytag id='thick-left'>" + info.responses[i] + "</th>");
+                    }
+                    else{
+                        $("#options").append("<th class=mytag>" + info.responses[i] + "</th>");
+                    }
+                    mybox = "b" + parseInt(box_base + i);
+                    if(i == 0){
+                        $("#boxes").append("<td class=mytag id='thick-left'><input id=" + mybox + " type='checkbox'></td>");
+                    }
+                    else{
+                        $("#boxes").append("<td class=mytag><input id=" + mybox + " type='checkbox'></td>");
+                    }
+                }
+                j++;
+          });
+      });
+  }
+  function collect(){ 
+     var mytab = 0;
+     var list = new Map(); 
+     $("#headers th").each(function(index){
+          console.log("collecting info about " + $(this).attr("class"));
+          if($(this).attr("class") != "num"){
+              console.log("don't worry, not num "+ mytab);
+                    for(var i = 0;i < parseInt($(this).attr("colspan"));i++){
+                        var nextRow = $(this).closest('tr').next();
+                         var nextText = nextRow.find('th:nth-child(' + (mytab + i + 1) +')').text();
+                        console.log("low child text " + nextText);
+              
+                         var mybox = "b" + parseInt(i + mytab - 1);
+                        console.log("looking in box " + mybox);
+                        console.log("is true?  " + $("#" + mybox).prop('checked'));
+                        if($("#" + mybox).prop('checked')){
+                            console.log("ok, adding " + nextText);
+                            list.set($(this).text(),nextText);
+                        }
+                }
+          }
+          mytab += parseInt($(this).attr("colspan"));
+          
+          /*fix this */
+          var response = database.ref("requests/-L5vOU3M0uzKfSrnNyKK/responses");
+          //var question = $(this).attr("class");
+          response.set({
+             [entry]:list
+          });
+          response = database.ref("requests/-L5vOU3M0uzKfSrnNyKK/responses/"+entry);
+          for (var [key,value] of list.entries()){
+              console.log("key:value = " + key + ":" + value); 
+              response.update({
+                  [key]:value
+              });
+          }
+
+      });
+  }
+</script>

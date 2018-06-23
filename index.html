@@ -1,0 +1,85 @@
+<html>
+    <style>
+        .center{
+            margin: auto; 
+            width: 50%;
+            padding:10px;
+            align-content: center;
+        }
+        button{
+            margin: 0 auto;
+            border-radius: 20%;
+        }
+        #grad{
+            border:none;
+            background: linear-gradient(to bottom right, #3E8DE1, #57F1EF);
+            color:white;
+        }
+    </style>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="center">
+            <h1 style="text-align: center">
+                <img style="width:13%;height: 10%; display: inline" src="college.png">
+            College Reaction</h1>
+            <h2 style="text-align: center">
+                Solutions
+            </h2>
+            <h5 style="color:dimgray;text-align: center;">College Reaction captures opinion and news that provides a fast-changing portrait of the United States colleges</h5>
+            <h3 >
+                College Reaction Solutions offers opportunities to conduct in-person polls of a customizable segment of the college demographic - with the ability to customize:
+
+            </h3>
+            <ul>
+                <li><h5>the questions asked by pollsters</h5></li>
+                <li><h5>the list of schools to be polled</h5></li>
+                <li><h5>volume of poll</h5></li>
+            </ul>
+        </div>
+        <div class="center" style="text-align: center;">
+            <button onclick="next()" class="btn btn-primary" id="grad" type="button"><h1>Get Started</h1></button>
+        </div>
+        <div class="container">
+          <div class="row">
+            <div class="col-sm">
+                <h2>
+                    Methodology
+                </h2>
+                <h4>
+                    Our methodology was carefully developed and refined by our team in conjunction with industry professionals in polling and data science. 
+                </h4>
+            </div>
+            <div class="col-sm">
+                <h2>
+                    Process
+                </h2>
+                <h4>
+                    Our pollsters conduct their work in person at their campus, entering data into our proprietary data collection technology, adding it to the numbers collected by their counterparts at other schools, and generating a comprehensive report; including a complete cross-category breakdown by age, gender, class year and college.
+                </h4>
+            </div>
+            <div class="col-sm">
+                <h2>
+                    Testimonials
+                </h2>
+                <div style="font-style: italic;">
+                    <h4>
+                        "College Reaction solutions is so great, and the team is super awesome!"
+                    </h4>
+                    <h6>Reputable organization</h6>
+                    <h4>
+                        "College Reaction solutions is so great, and the team is super awesome!"
+                    </h4>
+                    <h6>Reputable organization</h6>
+                <div>
+            </div>
+          </div>
+    </body>
+    <script>
+        function next(){
+            window.location = "request.html";
+        }
+    </script>
+</html>
