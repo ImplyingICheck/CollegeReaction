@@ -35,22 +35,20 @@
     .trash{
         margin-left: 10px;
     }
+    .add{
+        margin-left:10px;
+    }
+    h5{
+        margin-right: 10px;
+    }
 </style>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../../../favicon.ico">
-
-    <!-- Bootstrap core CSS -->
-    <!--<link href="../../../../dist/css/bootstrap.min.css" rel="stylesheet">-->
-
-    <!-- Custom styles for this template -->
-    <!--<link href="form-validation.css" rel="stylesheet">-->
-    <button type = "button" onclick="pageSwap('admin.html')">admin page</button>
-    <!--<button type = "button" onclick="pageSwap('maps/copy.html')">map page</button>-->
-    <!--<button type = "button" onclick="pageSwap('test.js')">node test</button>-->
+      
+    <button type = "button"><a style="color:black;text-decoration:none;" href="admin.html">admin page</a></button>
  
   </head>
 
@@ -114,14 +112,10 @@
                     <button id="addQ" type="button" class = "btn btn-primary query">
                         <i class="fas fa-plus"></i> Add Question
                     </button>
-                    <!--<button id="addQ" type="button" class = "btn btn-primary response">
-                        <i class="fas fa-plus"></i> Add Response
-                    </button>-->
                     <button id="confirm" type="button" class = "btn btn-primary">
                         <i class="fas fa-check"></i> Confirm
                     </button>
                 </div>
-                <!--<button class = "btn btn-primary ">Add Question</button>-->
             <div class="row">
             <button type="button" onclick="save()" class="btn btn-primary btn-lg btn-block" type="submit">Submit Poll</button>
           </form>
@@ -134,90 +128,48 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <!--<script src="../../../../assets/js/vendor/popper.min.js"></script>-->
-    <!--<script src="../../../../dist/js/bootstrap.min.js"></script>
-    <script src="../../../../assets/js/vendor/holder.min.js"></script>-->
-    <script>
-      // Example starter JavaScript for disabling form submissions if there are invalid fields
-      (function() {
-        'use strict';
-
-        window.addEventListener('load', function() {
-          // Fetch all the forms we want to apply custom Bootstrap validation styles to
-          var forms = document.getElementsByClassName('needs-validation');
-
-          // Loop over them and prevent submission
-          var validation = Array.prototype.filter.call(forms, function(form) {
-            form.addEventListener('submit', function(event) {
-              if (form.checkValidity() === false) {
-                event.preventDefault();
-                event.stopPropagation();
-              }
-              form.classList.add('was-validated');
-            }, false);
-          });
-        }, false);
-      })();
-    </script>
   </body>
 </html>
 
 <script>
-  // Initialize Firebase
-  var config = {
-        apiKey: "AIzaSyBmoYKilGu-xp58_oH5YnBecOvhh7mgTzc",
-        authDomain: "collegereaction-d3eed.firebaseapp.com",
-        databaseURL: "https://collegereaction-d3eed.firebaseio.com",
-        projectId: "collegereaction-d3eed",
-        storageBucket: "collegereaction-d3eed.appspot.com",
-        messagingSenderId: "592524817735"
-  };
-  firebase.initializeApp(config);
-  var database = firebase.database();
   var addingQ=true;
   var numAs = 0;
   $(document).ready(function() {
       $("#confirm").hide();
       $(".response").hide();
+      $(document).on("click", "button.trashA" , function() {
+          //we are going to delete an answer
+            var parentElem = $(this).parent();
+            $(this).css("background-color","yellow");
+            $(parentElem).css("background-color","yellow");
+            var remaining = $(parentElem).nextAll( ".A" ).find("h5");
+            for(var i = 0;i < remaining.length;i++){
+                var old = remaining[i].textContent.split("Answer ")[1];
+                remaining[i].textContent = "Answer " + (old - 1);
+            }
+            $(parentElem).remove();
+      });
       $(document).on("click", "button.trash" , function() {
-          var parentElem = this.parentElement;
-          if(!addingQ && ($( ".Q" ).index(parentElem) == ($(".Q").length - 1))){
-                numAs = 0;
-                addingQ = true;
-                $("#confirm").hide();
-                $("#addQ").text("Add Question");
-           }
+          //we are going to delete a question
+          var parentElem = $(this).parent();
             $(parentElem).nextUntil( ".Q, button" ).remove();
             var remaining = $(parentElem).nextAll( ".Q" ).find("h3");
-            console.log("remaining ",remaining);
             for(var i = 0;i < remaining.length;i++){
                 var old = remaining[i].textContent.split("Question ")[1];
-                console.log("old ",old);
-                console.log("remaining ",remaining[i]);
                 remaining[i].textContent = "Question " + (old - 1);
             }
             $(parentElem).remove();
       });
+      $(document).on("click", "button.add" , function() {
+          var parentElem = this.parentElement;
+          var numAs = $(parentElem).children(".A").length + 1;
+          console.log("numAs ",numAs);
+          $(parentElem).append("<div class='A mb-3'><label style='margin-bottom:10px; for='answer'><h5>Answer " + numAs + "</h5></label><button type='button' class='trashA btn btn-danger'><span class='glyphicon glyphicon-trash'></span></button><textarea class = 'answer form-control' rows='4' cols ='50'></textarea></div>");
+            console.log("done");
+      });
   });
-function pageSwap(newPage){
-    /*alert("swapping page to " + newPage);*/
-    window.location.href=newPage;
-}
   $("#addQ").click(function() {
-      if(addingQ){
-          $( "<div class='Q mb-3'><label for='question'><h3>Question " + ($( ".question" ).length + 1) + "</h3></label><button type='button' class='trash btn btn-danger'><span class='glyphicon glyphicon-trash'></span></button><textarea class = 'question form-control' rows='4' cols ='50'></textarea></div>").insertBefore("#addQ");
-      }
-      else{
-         numAs++;
-         $( "<div class='A mb-3'><label style='margin-bottom:10px; for='answer'>Answer " + numAs + "</label><textarea class = 'answer form-control' rows='4' cols ='50'></textarea></div>"
-              ).insertBefore("#addQ");
-      }
-      if(addingQ){
-        addingQ = false;
-        $("#confirm").show();
-        $("#addQ").text("Add Response");
-      }
+      $( "<div class='Q mb-3'><label for='question'><h3>Question " + ($( ".question" ).length + 1) + "</h3></label><button type='button' class='trash btn btn-danger'><span class='glyphicon glyphicon-trash'></span></button><button type='button' class='add btn btn-success'><span class='glyphicon glyphicon-plus'></span></button><textarea class = 'question form-control' rows='4' cols ='50'></textarea></div>").insertBefore("#addQ");
   });
 
 $("#confirm").click(function() {
@@ -237,7 +189,6 @@ $("#confirm").click(function() {
             responses: answers[index]
         });
     });
-    //pageSwap("maps/copy.html");
   }
   function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -248,14 +199,12 @@ $("#confirm").click(function() {
     return re.test(String(phone).toLowerCase());
   }
   function insertData(){
-        var newRef = firebase.database().ref('requests').push();
-        localStorage.setItem("newRef",newRef.key);
+        
         var bad = 0;
         var first = $("#firstName").val();
         if(!first){
             bad = 1;
             $(".first").css("display","inline");
-            console.log("no first name");
         }else{
             $(".first").css("display","none");
         }
@@ -263,7 +212,6 @@ $("#confirm").click(function() {
         if(!last){
             bad = 1;
             $(".last").css("display","inline");
-            console.log("no last name");
         }
         else{
             $(".last").css("display","none");
@@ -272,7 +220,6 @@ $("#confirm").click(function() {
         if(!compname){
             bad = 1;
             $(".comp").css("display","inline");
-            console.log("no compname");
         }
         else{
             $(".comp").css("display","none");
@@ -298,13 +245,9 @@ $("#confirm").click(function() {
         var answers = [];
         $( ".Q" ).each(function( index ) {
             answers.push([]);
-            console.log(index + ": " + $( this ).find(".question").val());
             questions.push($( this ).find(".question").val());
-            console.log("next until ",$(this).nextUntil( ".Q, button" ));
-            var AnswerElems = Array.from($(this).nextUntil( ".Q, button" ));
-            console.log("answerelems ",AnswerElems);
+            var AnswerElems = Array.from($(this).children( ".A" ));
             AnswerElems.forEach(function(element){
-                console.log("answer ",element.querySelector(".answer").value);
                 answers[answers.length - 1].push(element.querySelector(".answer").value);
             });
             if(answers[answers.length - 1].length < 2){
@@ -319,21 +262,36 @@ $("#confirm").click(function() {
         }
         console.log("questions ",questions);
         console.log("answers ",answers);
-        
+        //bad = 1;
         if(!bad){
-            newRef.set({
+            const request = new XMLHttpRequest()
+              request.addEventListener('load', () => {
+                if (request.status === 200) {
+                  console.log("Write succeeded!");
+                  localStorage.setItem("newRef",JSON.parse(request.responseText));
+                  window.location.href = "maps/copy.html";
+                }
+                if(request.status === 400){
+                    var error = JSON.parse(request.responseText);
+                    bad = 1;
+                    $(".phone").css("display","none");
+                    $(".email").css("display","none");
+                    $("."+error).css("display","inline");
+                }
+              })
+
+              request.open('POST', '/requests', true)
+              request.setRequestHeader('Content-type', 'application/json')
+              request.send(JSON.stringify({ 
                 first: first,
                 last: last,
                 compname: compname,
                 email: email,
                 phone: phone,
                 message: message,
-                questions: questions,
-                answers:answers
-            }).then(() => {
-                console.log('Write succeeded!');
-                pageSwap("maps/copy.html");
-            });
+                questions: JSON.stringify(questions),
+                answers: JSON.stringify(answers)
+              }));
             
         }
   }
